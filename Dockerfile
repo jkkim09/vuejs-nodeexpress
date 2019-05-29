@@ -8,7 +8,7 @@ WORKDIR /app
 # 현재 Dockerfile 있는 경로의 모든 파일을 /app 에 복사
 ADD . /app
 # npm install 을 실행
-RUN cd ./frontend && npm install && cd ../backend && npm install && cd ../
+RUN cd ./frontend && npm install && npm run build && cd ../backend && npm install && cd ../
 
 #환경변수 NODE_ENV 의 값을 development 로 설정
 ENV NODE_ENV development
