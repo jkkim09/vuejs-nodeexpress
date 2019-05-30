@@ -13,7 +13,7 @@
       <table>
         <tr id="buttonTrArea">
           <td>
-            <button class="bgc-1">로그인</button>
+            <button class="bgc-1" @click="login">로그인</button>
             <button class="top-10 bgc-1" @click="sinup">회원가입</button>
             <button class="top-10 bgc-2">NAVER 로그인</button>
             <button class="top-10 bgc-3">KAKAO 로그인</button>
@@ -45,6 +45,9 @@ export default {
     },
     find () {
       this.$router.push('finduserinfo')
+    },
+    login () {
+      this.$router.push('login')
     }
   }
 }
