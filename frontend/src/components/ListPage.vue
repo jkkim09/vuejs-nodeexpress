@@ -22,7 +22,7 @@
             </table>
         </div>
         <div id="localInfoList">
-            <div class="infoListItem"></div>
+            <div class="infoListItem" @click="placeSearch"></div>
             <div class="infoListItem top-10"></div>
             <div class="infoListItem top-10"></div>
             <div class="infoListItem top-10"></div>
@@ -36,6 +36,11 @@ export default {
   data () {
     return {
       local: '관악구 123-123'
+    }
+  },
+  methods: {
+    placeSearch () {
+      this.$router.push('place')
     }
   }
 }

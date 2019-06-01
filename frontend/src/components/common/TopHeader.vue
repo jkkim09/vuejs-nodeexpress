@@ -2,7 +2,7 @@
     <div id="topHeader">
       <div id="topHeaderArea">
         <div class="menuButton" @click="menuButton"></div>
-        <h1>{{ message }}</h1>
+        <h1 @click="searchAddress">{{ message }}</h1>
         <div id="backButton" @click="backButton">back</div>
       </div>
       <div id="menuArea" :class="{active: menuOnOff}">
@@ -16,17 +16,17 @@
           </div>
         </div>
         <div id="menuListArea">
-          <div>
+          <div @click="userInfo">
             <div></div>
-            <div></div>
+            <div>개인정보</div>
           </div>
           <div>
             <div></div>
-            <div></div>
+            <div>구메 예약 내역</div>
           </div>
           <div>
             <div></div>
-            <div></div>
+            <div>My Place</div>
           </div>
         </div>
       </div>
@@ -47,6 +47,12 @@ export default {
     },
     backButton () {
       this.$router.go(-1)
+    },
+    searchAddress () {
+      this.$router.push('address')
+    },
+    userInfo () {
+      this.$router.push('userinfo')
     }
   }
 }
@@ -55,9 +61,13 @@ export default {
 #topHeader {
   width: 100%;
   height: 100%;
+  margin-top: 50px;
 }
 #topHeaderArea {
-    position: relative;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 50px;
     overflow: hidden;
@@ -92,7 +102,8 @@ h1 {
     line-height: 50px;
 }
 #menuArea {
-  position: absolute;
+  position: fixed;
+  z-index: 101;
   top: 0;
   left: -90%;
   width: 90%;
@@ -154,5 +165,9 @@ h1 {
   height: 30px;
   margin-top: 10px;
   background-color: #403d3d;
+  text-align: center;
+  font-size: 15px;
+  color: #ffffff;
+  line-height: 30px;
 }
 </style>
