@@ -4,7 +4,7 @@
         <div id="categoryArea">
             <table id="listArea">
                 <tr>
-                    <td>
+                    <td @click="placeSearch">
                         <div class="categoryImage"></div>
                     </td>
                     <td>
@@ -22,7 +22,7 @@
             </table>
         </div>
         <div id="localInfoList">
-            <div class="infoListItem" @click="placeSearch"></div>
+            <div class="infoListItem" @click="reserv"></div>
             <div class="infoListItem top-10"></div>
             <div class="infoListItem top-10"></div>
             <div class="infoListItem top-10"></div>
@@ -41,6 +41,9 @@ export default {
   methods: {
     placeSearch () {
       this.$router.push('place')
+    },
+    reserv () {
+      this.$router.push('reservation')
     }
   }
 }

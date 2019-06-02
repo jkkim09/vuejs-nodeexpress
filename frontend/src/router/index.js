@@ -8,6 +8,9 @@ import ListPage from '@/components/ListPage'
 import Address from '@/components/Address'
 import PlaceSearch from '@/components/PlaceSearch'
 import UserInfo from '@/components/UserInfo'
+import History from '@/components/History'
+import Myplace from '@/components/Myplace'
+import Reservation from '@/components/Reservation'
 
 Vue.use(Router)
 
@@ -52,6 +55,21 @@ export default new Router({
       path: '/userinfo',
       name: 'UserInfo',
       component: UserInfo
+    },
+    {
+      path: '/history',
+      name: 'History',
+      component: History
+    },
+    {
+      path: '/myplace',
+      name: 'Myplace',
+      component: Myplace
+    },
+    {
+      path: '/reservation',
+      name: 'Reservation',
+      component: Reservation
     }
   ]
 })

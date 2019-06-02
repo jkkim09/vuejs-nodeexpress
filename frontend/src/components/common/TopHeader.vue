@@ -20,11 +20,11 @@
             <div></div>
             <div>개인정보</div>
           </div>
-          <div>
+          <div @click="history">
             <div></div>
             <div>구메 예약 내역</div>
           </div>
-          <div>
+          <div @click="myPlace">
             <div></div>
             <div>My Place</div>
           </div>
@@ -53,6 +53,12 @@ export default {
     },
     userInfo () {
       this.$router.push('userinfo')
+    },
+    history () {
+      this.$router.push('history')
+    },
+    myPlace () {
+      this.$router.push('myplace')
     }
   }
 }
