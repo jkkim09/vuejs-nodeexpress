@@ -6,17 +6,17 @@ const path = require('path')
 
 module.exports = {
   dev: {
+
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/test': {
-        target: 'http://localhost:8001/test',
+      '/': {
+        target: 'http://localhost:3000/',
         changeOrigin: true,
         pathRewrite: {
-          '^/test': ''
-        },
-        ws: false
+          '^/': ''
+        }
       }
     },
 
@@ -54,12 +54,11 @@ module.exports = {
   build: {
     // Template for index.html
     // index: path.resolve(__dirname, '../dist/index.html'),
-    index: path.resolve(__dirname, '../../backend/public/index.html'),
-
+    index: path.resolve(__dirname, '../../backend/views/index.html'),
     // Paths
     // assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsRoot: path.resolve(__dirname, '../../backend/public'),
-    assetsSubDirectory: 'static',
+    assetsRoot: path.resolve(__dirname, '../../backend'),
+    assetsSubDirectory: 'public',
     assetsPublicPath: '/',
 
     /**

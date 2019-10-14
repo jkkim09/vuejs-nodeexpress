@@ -1,20 +1,27 @@
-#어떤 이미지로부터 새로운 이미지를 생성할지를 지정
-FROM node:6
+#어떤 이미지를 기반으로 빌드하는지에 대해서 지정
+FROM node:8
 
-# /app 디렉토리 생성
-RUN mkdir -p /app
-# /app 디렉토리를 WORKDIR 로 설정
-WORKDIR /app
-# 현재 Dockerfile 있는 경로의 모든 파일을 /app 에 복사
-ADD . /app
-# npm install 을 실행
-RUN cd ./frontend && npm install && npm run build && cd ../backend && npm install && cd ../
+#Dockerfile을 생성/관리하는 사람
+LABEL jk "wkrud203@gmail.com"
 
-#환경변수 NODE_ENV 의 값을 development 로 설정
-ENV NODE_ENV development
+#디렉토리 생성
+RUN mkdir -p /usr/src/app
 
-#가상 머신에 오픈할 포트
-EXPOSE 3031 80
+#WORKDIR 설정
+WORKDIR /usr/src/app
 
-#컨테이너에서 실행될 명령을 지정
+#앱 의존성 설치를 위해서 package.json 가져옴
+COPY ./backend/package*.json ./
+
+#npm install 실행
+#프로덕션 코드 빌드시 RUN npm ci --only=production
+RUN npm install
+
+#앱 소스 추가
+COPY ./backend .
+
+#오픈 포트 설정
+EXPOSE 8080
+
+#컨테이너에서 실행할 명령어 지정
 CMD ["npm", "start"]
