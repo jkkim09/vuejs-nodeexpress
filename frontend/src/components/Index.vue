@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       socket: {},
-      user: this.$store.getters.getPage,
+      user: this.$store.getters.getUser,
       boxType: this.$store.getters.getPage,
       count: 0
     }

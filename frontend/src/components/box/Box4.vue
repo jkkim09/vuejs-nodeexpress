@@ -3,8 +3,8 @@
       <tr>
         <td id="table-item-td">
           <div>
-            <div>문제10번 정답</div>
-            <div>홍길동</div>
+            <div>문제{{this.current.index}}번 정답</div>
+            <div>{{this.current.list[this.current.answer - 1]}}</div>
           </div>
         </td>
       </tr>
@@ -15,7 +15,15 @@ export default {
   name: 'box4',
   data () {
     return {
+      current: {}
     }
+  },
+  mounted () {
+    this.current = this.$store.getters.getCurrent
+
+    this.$store.watch(() => this.$store.getters['getCurrent'], (value) => {
+      this.current = value
+    })
   }
 }
 </script>

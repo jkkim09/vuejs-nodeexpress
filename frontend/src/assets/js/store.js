@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
   state: {
     user: '',
     page: 0,
-    event: {}
+    event: {},
+    currentItem: {}
   },
   getters: {
     getPage: function (state) {
@@ -19,6 +20,9 @@ export const store = new Vuex.Store({
     },
     getEvent: function (state) {
       return state.event
+    },
+    getCurrent: function (state) {
+      return state.currentItem
     }
   },
   mutations: {
@@ -30,6 +34,9 @@ export const store = new Vuex.Store({
     },
     setEvent: function (state, payload) {
       state.event[payload] = true
+    },
+    setCurrent: function (state, payload) {
+      state.currentItem = payload
     }
   }
 })

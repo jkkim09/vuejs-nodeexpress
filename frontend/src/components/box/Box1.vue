@@ -23,6 +23,7 @@ export default {
       console.log('selectitem', e)
       this.index = e.index
       this.title = e.title
+      this.$store.commit('setCurrent', e)
     })
   }
 }
