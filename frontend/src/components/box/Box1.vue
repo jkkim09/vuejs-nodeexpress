@@ -1,10 +1,10 @@
 <template>
     <div id="box1">
       <div>
-        <div id="q-number">문제1</div>
+        <div id="q-number">문제{{this.index}}</div>
       </div>
       <div>
-        우리 회사의 유튜버는 누그인가요?
+        {{this.title}}
       </div>
     </div>
 </template>
@@ -13,27 +13,19 @@ export default {
   name: 'Box1',
   data () {
     return {
-      socket: {}
+      index: 1,
+      title: ''
     }
   },
   mounted () {
-    this.socket = this.$io('http://localhost:3000')
-    this.socket.on('connect', (e) => {
-      console.log('연결')
-      this.socket.emit('client message', {
-        message: 'test emit'
+    if (!this.$store.getters.getEvent['viewSelectItem']) {
+      this.$store.commit('setEvent', 'viewSelectItem')
+      this.$socket.on('viewSelectItem', (e) => {
+        console.log('selectitem', e)
+        this.index = e.index
+        this.title = e.title
       })
-    })
-    this.socket.on('event', (e) => {
-      console.log(e)
-    })
-
-    this.socket.on('server message', (e) => {
-      console.log(e)
-    })
-    this.socket.on('disconnect', () => {
-      console.log('End')
-    })
+    }
   }
 }
 </script>

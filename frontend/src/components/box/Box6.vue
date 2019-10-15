@@ -2,10 +2,10 @@
     <div id="box6">
       <div>
         <div v-for="(item, index) in q" :key="index">
-          <span>--- {{ index + 1 }} 번 문제: {{ item.title }} ---</span><br>
-          <span>-> {{ index + 1 }} 번 정답 : {{ item.answer }}</span><br>
+          <span @click="selectItem(index)">--- {{ item.index }} 번 문제: {{ item.title }} ---</span><br>
+          <span>-> {{ index + 1 }} 번 문제 정답 : {{ item.answer }}</span><br>
           <span v-for="(list, index) in item.list" :key="index">
-            {{ list }}<br>
+            {{ index + 1 }}번 :{{ list }}<br>
           </span>
         </div>
       </div>
@@ -19,6 +19,12 @@
         <input placeholder="문제 삭제 ex) 2" v-model="deleteItem"/>
         <button @click="deleteClick">삭제</button>
       </div>
+      <div>
+        <button @click="pageChange(4)">정답</button>
+        <button @click="pageChange(3)">순위</button>
+        <button @click="pageChange(2)">문제정답자</button>
+        <button @click="pageChange(1)">문제화면</button>
+      </div>
     </div>
 </template>
 <script>
@@ -26,53 +32,7 @@ export default {
   name: 'box6',
   data () {
     return {
-      q: [
-        {
-          title: '1번',
-          answer: '1번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '2번',
-          answer: '2번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '3번',
-          answer: '3번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '4번',
-          answer: '4번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '5번',
-          answer: '5번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '6번',
-          answer: '6번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '7번',
-          answer: '7번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '8번',
-          answer: '8번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        },
-        {
-          title: '9번',
-          answer: '9번 정답',
-          list: ['1번 힌트', '2번 힌트', '3번 힌트', '4번 힌트']
-        }
-      ],
+      q: [],
       insertItem: {
         title: '',
         answer: '',
@@ -81,7 +41,34 @@ export default {
       deleteItem: ''
     }
   },
+  created () {
+    this.$http({
+      url: '/itemList',
+      method: 'get'
+    }).then(response => {
+      if (response.data.code === 0) {
+        this.q = response.data.obj
+      } else {
+        alert(response.data.msg)
+      }
+    },
+    error => {
+      console.error(error)
+    })
+
+    // socket io
+  },
   methods: {
+    selectItem (index) {
+      this.$socket.emit('viewSelectItem', {
+        obj: this.q[index]
+      })
+    },
+    pageChange (page) {
+      this.$socket.emit('pageChange', {
+        obj: {page: page}
+      })
+    },
     insertClick () {
       const itemTitle = this.insertItem.title
       const itemList = this.insertItem.list
@@ -89,11 +76,28 @@ export default {
       if (itemTitle && itemList && itemAnswer) {
         const itemObject = {
           title: itemTitle,
-          list: this.listFunction(itemList),
+          list: itemList,
           answer: Number(itemAnswer)
         }
-        console.log(itemObject)
-        this.q.push(itemObject)
+        // db insert
+        this.$http({
+          url: '/itemInsert',
+          method: 'get',
+          params: {
+            item: itemObject
+          }
+        }).then(response => {
+          if (response.data.code === 0) {
+            itemObject.list = this.listFunction(itemObject.list)
+            this.q.push(itemObject)
+            alert(response.data.msg)
+          } else {
+            alert(response.data.msg)
+          }
+        },
+        error => {
+          console.error(error)
+        })
       } else {
         alert('정상적으로 입력해주세요.')
       }
@@ -101,7 +105,23 @@ export default {
     deleteClick () {
       if (this.deleteItem) {
         const deleteNum = Number(this.deleteItem)
-        this.q.splice(deleteNum - 1, 1)
+        this.$http({
+          url: '/itemDelete',
+          method: 'get',
+          params: {
+            item: deleteNum
+          }
+        }).then(response => {
+          if (response.data.code === 0) {
+            alert(response.data.msg)
+            // this.q.splice(deleteNum - 1, 1)
+          } else {
+            alert(response.data.msg)
+          }
+        },
+        error => {
+          console.error(error)
+        })
       } else {
         alert('삭제할 문제 번호를 입력해주세요')
       }
@@ -147,6 +167,14 @@ export default {
     height: auto;
     position: fixed;
     bottom: 50px;
+    left: 0;
+  }
+
+    #box6 > div:nth-child(4) {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 100px;
     left: 0;
   }
 </style>

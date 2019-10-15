@@ -1,8 +1,13 @@
 var socketIO = function(io) {
     io.on('connection', function(socket){
-        socket.on('client message', function(data){
-            console.log('server message');
-            io.emit('server message', data.message);
+        socket.on('viewSelectItem', function(data){
+            console.log('viewSelectItem message');
+            console.log(data.obj);
+            io.emit('viewSelectItem', data.obj);
+        });
+        socket.on('pageChange', function(data){
+            console.log('pageChange message');
+            io.emit('pageChange', data.obj);
         });
     });
 }

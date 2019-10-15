@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import io from 'socket.io-client'
+import config from './assets/js/config'
+// store.js 를 불러와
+import { store } from './assets/js/store'
 
 import Header0 from './components/header/Header0'
 import Header1 from './components/header/Header1'
@@ -24,6 +27,8 @@ import Box6 from './components/box/Box6'
 
 Vue.prototype.$http = axios
 Vue.prototype.$io = io
+Vue.prototype.$socket = io('http://localhost:3000')
+Vue.prototype.$config = config
 // Vue.prototype.$io = io
 Vue.config.productionTip = false
 Vue.component('header-0', Header0)
@@ -41,9 +46,11 @@ Vue.component('box-3', Box3)
 Vue.component('box-4', Box4)
 Vue.component('box-5', Box5)
 Vue.component('box-6', Box6)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

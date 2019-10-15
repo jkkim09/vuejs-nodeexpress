@@ -40,7 +40,15 @@ export default {
           }
         }).then(response => {
           if (response.data.code === 0) {
-            alert(response.data.msg)
+            alert(this.userName + '님 ' + response.data.msg)
+            this.$store.commit('setUser', this.userName)
+            if (this.userName === 'admin1') {
+              this.$store.commit('setPage', 6)
+            } else if (this.userName === 'admin2') {
+              this.$store.commit('setPage', 1)
+            } else {
+              this.$store.commit('setPage', 5)
+            }
           } else {
             alert(response.data.msg)
           }
@@ -63,11 +71,17 @@ export default {
             userPwd: this.userPwd
           }
         }).then(response => {
-          console.log(response)
+          if (response.data.code === 0) {
+            alert(response.data.msg)
+          } else {
+            alert(response.data.msg)
+          }
         },
         error => {
           console.log(error)
         })
+      } else {
+        alert('이름 or 비밀번호 입력 하세요')
       }
     },
     login_page () {

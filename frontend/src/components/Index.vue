@@ -31,16 +31,35 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Index',
   data () {
     return {
-      user: 'user',
-      boxType: 6,
+      socket: {},
+      user: this.$store.getters.getPage,
+      boxType: this.$store.getters.getPage,
       count: 0
     }
   },
+  computed: mapState(['status']),
   created () {
+    if (!this.$store.getters.getEvent['pageChange']) {
+      this.$store.commit('setEvent', 'pageChange')
+      this.$socket.on('pageChange', (e) => {
+        if (this.$store.getters.getUser === 'admin2') {
+          this.$store.commit('setPage', e.page)
+        }
+      })
+    }
+
+    this.$store.watch(() => this.$store.getters['getPage'], (value) => {
+      this.boxType = value
+    })
+
+    this.$store.watch(() => this.$store.getters['getUser'], (value) => {
+      this.user = value
+    })
     // this.$http({
     //   url: '/check',
     //   method: 'get',
