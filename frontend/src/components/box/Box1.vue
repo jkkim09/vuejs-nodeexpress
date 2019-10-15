@@ -18,14 +18,12 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.getters.getEvent['viewSelectItem']) {
-      this.$store.commit('setEvent', 'viewSelectItem')
-      this.$socket.on('viewSelectItem', (e) => {
-        console.log('selectitem', e)
-        this.index = e.index
-        this.title = e.title
-      })
-    }
+    this.$socket.off('viewSelectItem')
+    this.$socket.on('viewSelectItem', (e) => {
+      console.log('selectitem', e)
+      this.index = e.index
+      this.title = e.title
+    })
   }
 }
 </script>

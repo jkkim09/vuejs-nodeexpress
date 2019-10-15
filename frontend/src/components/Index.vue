@@ -44,14 +44,12 @@ export default {
   },
   computed: mapState(['status']),
   created () {
-    if (!this.$store.getters.getEvent['pageChange']) {
-      this.$store.commit('setEvent', 'pageChange')
-      this.$socket.on('pageChange', (e) => {
-        if (this.$store.getters.getUser === 'admin2') {
-          this.$store.commit('setPage', e.page)
-        }
-      })
-    }
+    this.$socket.off('pageChange')
+    this.$socket.on('pageChange', (e) => {
+      if (this.$store.getters.getUser === 'admin2') {
+        this.$store.commit('setPage', e.page)
+      }
+    })
 
     this.$store.watch(() => this.$store.getters['getPage'], (value) => {
       this.boxType = value
