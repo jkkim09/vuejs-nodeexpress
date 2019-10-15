@@ -31,7 +31,6 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 export default {
   name: 'Index',
   data () {
@@ -42,7 +41,6 @@ export default {
       count: 0
     }
   },
-  computed: mapState(['status']),
   created () {
     this.$socket.off('pageChange')
     this.$socket.on('pageChange', (e) => {

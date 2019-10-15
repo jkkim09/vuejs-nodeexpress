@@ -1,7 +1,7 @@
 <template>
     <table id="box4">
       <tr>
-        <td id="table-item-td">
+        <td id="box4-item-td">
           <div>
             <div>문제{{this.current.index}}번 정답</div>
             <div>{{this.current.list[this.current.answer - 1]}}</div>
@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: 'box4',
+  name: 'Box4',
   data () {
     return {
       current: {}
@@ -20,7 +20,6 @@ export default {
   },
   mounted () {
     this.current = this.$store.getters.getCurrent
-
     this.$store.watch(() => this.$store.getters['getCurrent'], (value) => {
       this.current = value
     })
@@ -32,18 +31,18 @@ export default {
   width: 100%;
   height: 100%;
 }
-#table-item-td {
+#box4-item-td {
   width: 100%;
   height: 100%;
   text-align: center;
 }
-#table-item-td > div:nth-child(1) {
+#box4-item-td > div:nth-child(1) {
   width: 80%;
   height: 30%;
   display: inline-block;
 }
 
-#table-item-td > div:nth-child(1) > div:nth-child(1) {
+#box4-item-td > div:nth-child(1) > div:nth-child(1) {
   width: 100%;
   height: 35px;
   line-height: 35px;
@@ -52,7 +51,7 @@ export default {
   font-weight: bold;
   margin-bottom: 20px;
 }
-#table-item-td > div:nth-child(1) > div:nth-child(2) {
+#box4-item-td > div:nth-child(1) > div:nth-child(2) {
   width: 100%;
   height: 55px;
   line-height: 55px;

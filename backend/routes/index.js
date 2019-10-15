@@ -107,6 +107,9 @@ router.get('/itemList', function (req, res, next) {
   });
 });
 
+/**
+ * 문제 등록
+ */
 router.get('/itemInsert', function (req, res, next) {
   var params = JSON.parse(req.query.item);
   var sqlQuery = "INSERT INTO q_item(item_title,item_list,item_answer) VALUE('"+ params.title +"', '"+ params.list +"', "+ params.answer + ")";
@@ -119,6 +122,9 @@ router.get('/itemInsert', function (req, res, next) {
   });  
 });
 
+/***
+ * 문제 삭제
+ */
 router.get('/itemDelete', function (req, res, next) {
   var params = req.query.item;
   var sqlQuery = "DELETE FROM q_item WHERE item_num = " + params;
@@ -130,5 +136,40 @@ router.get('/itemDelete', function (req, res, next) {
     });
   });  
 });
+
+router.get('/lank', function (req, res, next) {
+  var params = req.query;
+  console.log(params.item)
+  var itemList = params.item
+  var itemLength = (itemList.length > 5) ? 5 : itemList.length
+  for (var i=0; i<itemLength; i++) {
+    var indexItem = JSON.parse(itemList[i]);
+    var point = 0;
+    var index = indexItem.index;
+    var user = indexItem.user
+    switch (i) {
+      case 0:
+          point = 5;
+        break;
+      case 1:
+          point = 4;
+        break;
+      case 2:
+          point = 3;
+        break;
+      case 3:
+          point = 2;
+        break;
+      case 4:
+          point = 1;
+        break;
+    }
+    console.log(index, user, point);
+  }
+  res.send({
+    code: 0
+  });
+})
+
 
 module.exports = router;

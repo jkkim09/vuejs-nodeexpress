@@ -1,28 +1,10 @@
 <template>
     <div id="box2">
-      <div>문제10 정답자 60명</div>
+      <div>문제{{this.config.index}} 정답자 {{this.config.count}}명</div>
       <div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
-        <div><span>1등 : </span>홍길동 00:00:00</div>
+        <div v-for="(item, index) in items" :key="index">
+          <span>{{index + 1}}등 : </span>{{item.user}} : {{item.time}}
+        </div>
       </div>
     </div>
 </template>
@@ -31,7 +13,42 @@ export default {
   name: 'Box2',
   data () {
     return {
+      config: {},
+      items: []
     }
+  },
+  created () {
+    this.$socket.emit('currentAnswer', {})
+    this.$socket.off('currentAnswer')
+    this.$socket.on('currentAnswer', (e) => {
+      console.log(e)
+      if (e.length === 0) {
+        return
+      }
+      this.config = {
+        index: e[0].index,
+        count: e.length
+      }
+      this.items = e
+
+      this.$http({
+        url: '/lank',
+        method: 'get',
+        params: {
+          item: this.items
+        }
+      }).then(response => {
+        if (response.data.code === 0) {
+          console.log(response.data)
+        } else {
+          alert(response.data.msg)
+        }
+      },
+      error => {
+        console.error(error)
+        alert('server 접속 오류')
+      })
+    })
   }
 }
 </script>

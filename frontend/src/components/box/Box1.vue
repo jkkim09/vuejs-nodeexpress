@@ -1,10 +1,10 @@
 <template>
     <div id="box1">
       <div>
-        <div id="q-number">문제{{this.index}}</div>
+        <div id="q-number">문제{{this.current.index}}</div>
       </div>
       <div>
-        {{this.title}}
+        {{this.current.title}}
       </div>
     </div>
 </template>
@@ -14,10 +14,14 @@ export default {
   data () {
     return {
       index: 1,
-      title: ''
+      title: '',
+      current: this.$store.getters.getCurrent
     }
   },
   mounted () {
+    this.$store.watch(() => this.$store.getters['getCurrent'], (value) => {
+      this.current = value
+    })
     this.$socket.off('viewSelectItem')
     this.$socket.on('viewSelectItem', (e) => {
       console.log('selectitem', e)
