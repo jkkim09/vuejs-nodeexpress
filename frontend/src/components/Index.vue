@@ -56,23 +56,36 @@ export default {
     this.$store.watch(() => this.$store.getters['getUser'], (value) => {
       this.user = value
     })
-    // this.$http({
-    //   url: '/check',
-    //   method: 'get',
-    //   params: {
-    //     user: this.getParams().admin
-    //   }
-    // }).then(response => {
-    //   if (response.data.code === 0) {
-    //     this.user = response.data.user
-    //   }
-    // },
-    // error => {
-    //   console.error(error)
-    //   alert('server 접속 오류')
-    // })
+
+    this.$store.watch(() => this.$store.getters['getCurrent'], (value) => {
+      if (this.user !== 'admin1' && this.user !== 'admin2') {
+        this.timeSet(value.startTime)
+      }
+    })
   },
   methods: {
+    timeSet (time) {
+      var clientTime = Date.now()
+      var setTime = Math.floor((time - clientTime) / 1000)
+      if (setTime > 1) {
+        this.count = setTime
+        var countSet = setInterval(() => {
+          this.count = this.count - 1
+          if (this.count === 0) {
+            this.endEvent()
+            clearInterval(countSet)
+          }
+        }, 1000)
+      } else {
+        this.count = 'End'
+      }
+    },
+    endEvent () {
+      var that = this
+      setTimeout(function () {
+        that.count = 'End'
+      }, 5000)
+    },
     getParams () {
       var param = {}
       var url = decodeURIComponent(location.href)
@@ -130,7 +143,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #000000;
-  opacity: 0.9;
+  /* opacity: 0.9; */
 }
 #loding > table:nth-child(2) {
   width: 100%;

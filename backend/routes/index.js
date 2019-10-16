@@ -137,9 +137,11 @@ router.get('/itemDelete', function (req, res, next) {
   });  
 });
 
+/**
+ * rank 정산
+ */
 router.get('/lank', function (req, res, next) {
   var params = req.query;
-  console.log(params.item)
   var itemList = params.item
   var itemLength = (itemList.length > 5) ? 5 : itemList.length
   for (var i=0; i<itemLength; i++) {
@@ -164,12 +166,100 @@ router.get('/lank', function (req, res, next) {
           point = 1;
         break;
     }
-    console.log(index, user, point);
+    rankQueryFunction(user, point, itemLength - 1, i);
   }
   res.send({
     code: 0
   });
-})
+});
+
+/**
+ * total rank return 
+ */
+router.get('/totalRank', function (req, res, next) {
+  var rankOrderByQuery = "SELECT a.id,b.total_point, b.befor_rank, b.after_rank FROM user_info AS a JOIN user_point AS b WHERE a.num = b.num ORDER BY total_point DESC";
+  connection.query(rankOrderByQuery, function(err, rows) {
+    if(err) throw err;
+    res.send({
+      code: 0,
+      items: rows
+    });
+  });
+});
+
+/**
+ * rank insert or update query
+ */
+function rankQueryFunction(user, point, end, index) {
+  const selectQuery = "SELECT num FROM user_info WHERE id = '"+ user +"'";
+  connection.query(selectQuery, function(err, a) {
+    const indexPoint = point;
+    const indexUser = user;
+    const userSelectQuery = "SELECT num FROM user_point WHERE num = "+ a[0].num;
+    connection.query(userSelectQuery, function(err, b) {
+        // 포인트 정보에 정보가 있는사람
+        if (b[0]) {
+          const userInsertQuery = "SELECT total_point FROM user_point WHERE num =" + b[0].num;
+          connection.query(userInsertQuery, function(err, c) {
+            // 포인트가 0, undefined 가 아닐때.
+            if (c[0].total_point) {
+                let sumPoint = indexPoint + c[0].total_point;
+                const pointUpdateQuery = "UPDATE user_point SET total_point = " + sumPoint + " WHERE num = "+ b[0].num;
+                connection.query(pointUpdateQuery, function(err, d) {
+                  if (end === index) {
+                    rankOrderby();
+                  }
+                });
+            } else {
+              const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ numNumber +", "+ indexPoint +")"
+              connection.query(pointInsertQuery, function(err, e) {
+                if (end === index) {
+                  rankOrderby();
+                }
+              });
+            }
+          });
+        } else {
+          // 포인트 정보에 정보가 없는사람
+          const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ a[0].num +", "+ indexPoint +")"
+              connection.query(pointInsertQuery, function(err, f) {
+                if (end === index) {
+                  rankOrderby();
+                }
+          });
+        }
+    });
+  });
+}
+
+function rankOrderby () {
+  const orderByQuery = "SELECT * FROM user_point ORDER BY total_point DESC";
+  connection.query(orderByQuery, function(err, rows) {
+    for (var i in rows) {
+      const indexItem = rows[i];
+      const beforRank = indexItem.befor_rank;
+      const afterRank = indexItem.after_rank;
+      const userNum = indexItem.num;
+      rankUpdateQurey(userNum, beforRank, afterRank, Number(i)+1);
+    }
+  });
+}
+
+function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
+  // 이전 기록이 있으면
+  if (afterRank) {
+    const beforRankUpdate = "UPDATE user_point SET befor_rank = "+ afterRank +" WHERE num = " + userNum;
+    connection.query(beforRankUpdate, function(err, a) {
+      const afterRankUpdate = "UPDATE user_point SET after_rank = "+ currentRank +" WHERE num = " + userNum;
+      connection.query(afterRankUpdate, function(err, c) {
+      });
+    });
+  } else {
+    const afterRankUpdate = "UPDATE user_point SET after_rank = "+ afterRank +" WHERE num = " + userNum;
+    connection.query(afterRankUpdate, function(err, b) {
+    });
+  }
+}
 
 
 module.exports = router;

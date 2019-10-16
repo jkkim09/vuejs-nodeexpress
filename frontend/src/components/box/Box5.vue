@@ -20,7 +20,6 @@ export default {
   created () {
     this.$socket.off('viewSelectItem')
     this.$socket.on('viewSelectItem', (e) => {
-      console.log('selectitem', e)
       this.current = e
       this.list = e.list
       this.$store.commit('setCurrent', e)

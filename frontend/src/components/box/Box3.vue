@@ -3,14 +3,10 @@
       <tr>
         <td id="table-item-td">
           <div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
-            <div>1위 : 홍길동</div>
+            <div v-for="(item, index) in items" :key="index">
+              {{index + 1}}위 : {{item.id}}({{item.total_point}}점)
+              {{item.after_rank?(item.befor_rank - item.after_rank): '-'}}
+            </div>
           </div>
         </td>
       </tr>
@@ -21,7 +17,22 @@ export default {
   name: 'Box3',
   data () {
     return {
+      items: []
     }
+  },
+  created () {
+    this.$http({
+      url: '/totalRank',
+      method: 'get'
+    }).then(response => {
+      if (response.data.code === 0) {
+        this.items = response.data.items
+      } else {
+      }
+    },
+    error => {
+      console.log(error)
+    })
   }
 }
 </script>
@@ -47,7 +58,7 @@ export default {
   height: 30px;
   line-height: 30px;
   text-align: center;
-  font-size: 30px;
+  font-size: 21px;
   font-weight: bold;
   margin-bottom: 20px;
 }
