@@ -27,7 +27,7 @@ import Box6 from './components/box/Box6'
 
 Vue.prototype.$http = axios
 Vue.prototype.$io = io
-Vue.prototype.$socket = io('http://localhost:3000')
+Vue.prototype.$socket = io('http://3.88.145.26:80')
 Vue.prototype.$config = config
 // Vue.prototype.$io = io
 Vue.config.productionTip = false
