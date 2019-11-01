@@ -12,10 +12,10 @@ WORKDIR /usr/src/app
 
 #앱 의존성 설치를 위해서 package.json 가져옴
 COPY ./backend/package*.json ./
-
 #npm install 실행
 #프로덕션 코드 빌드시 RUN npm ci --only=production
 RUN npm install
+RUN npm install pm2 -g
 
 #앱 소스 추가
 COPY ./backend .
@@ -24,4 +24,5 @@ COPY ./backend .
 EXPOSE 8080
 
 #컨테이너에서 실행할 명령어 지정
-CMD ["npm", "start"]
+CMD ["npm", "run", "pm2"]
+# CMD ["npm", "start"]
