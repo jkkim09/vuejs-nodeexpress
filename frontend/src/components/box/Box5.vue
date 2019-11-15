@@ -14,7 +14,8 @@ export default {
   data () {
     return {
       list: [],
-      current: {}
+      current: {},
+      checkClick: true
     }
   },
   created () {
@@ -23,10 +24,16 @@ export default {
       this.current = e
       this.list = e.list
       this.$store.commit('setCurrent', e)
+      this.checkClick = true
     })
   },
   methods: {
     checkItem (index) {
+      if(!this.checkClick) {
+        alert('중복 선택 불가.');
+        return;
+      } 
+
       let mySelect = false
       const answer = this.current.answer
       if (Number(answer) === Number(index)) {
@@ -38,10 +45,10 @@ export default {
         answer: mySelect,
         time: new Date().getTime()
       }
-      console.log(answer, index, sendAnswer)
       this.$socket.emit('userAnswer', {
         obj: sendAnswer
       })
+      this.checkClick = false
     }
   }
 }

@@ -38,7 +38,8 @@ export default {
       socket: {},
       user: this.$store.getters.getUser,
       boxType: this.$store.getters.getPage,
-      count: 0
+      count: 0,
+      checkCount: true
     }
   },
   created () {
@@ -67,7 +68,8 @@ export default {
     timeSet (time) {
       var clientTime = Date.now()
       var setTime = Math.floor((time - clientTime) / 1000)
-      if (setTime > 1) {
+      if (setTime > 1 && this.checkCount) {
+        this.checkCount = false
         this.count = setTime
         var countSet = setInterval(() => {
           this.count = this.count - 1
@@ -76,7 +78,7 @@ export default {
             clearInterval(countSet)
           }
         }, 1000)
-      } else {
+      } else if (setTime === 0 && this.checkCount) {
         this.count = 'End'
       }
     },
@@ -84,6 +86,7 @@ export default {
       var that = this
       setTimeout(function () {
         that.count = 'End'
+        that.checkCount = true
       }, 5000)
     },
     getParams () {
