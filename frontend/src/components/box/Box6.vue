@@ -2,29 +2,26 @@
     <div id="box6">
       <div>
         <div v-for="(item, index) in q" :key="index">
-          <span @click="selectItem(index)">--- {{ item.index }} 번 문제: {{ item.title }} ---</span><br>
+          <span class="send_button_class" @click="selectItem(index)">--- {{ item.index }} 번 문제: {{ item.title }} ---</span><br>
           <span>-> {{ index + 1 }} 번 문제 정답 : {{ item.answer }}</span><br>
           <span v-for="(list, index) in item.list" :key="index">
             {{ index + 1 }}번 :{{ list }}<br>
           </span>
         </div>
       </div>
-      <div>
+      <div id="option_area" v-if="optionButton">
         <input placeholder="문제 입력" v-model="insertItem.title"/>
         <input placeholder="힌트 ex) 1,2,3,4" v-model="insertItem.list"/>
         <input placeholder="정답 ex) 2" v-model="insertItem.answer"/>
-        <button @click="insertClick">입력</button>
-      </div>
-      <div>
+        <button @click="insertClick" class="button_1">입력</button>
         <input placeholder="문제 삭제 ex) 2" v-model="deleteItem"/>
-        <button @click="deleteClick">삭제</button>
+        <button @click="deleteClick" class="button_1">삭제</button>
+        <button @click="pageChange(4)" class="button_2">정답</button>
+        <button @click="pageChange(3)" class="button_2">순위</button>
+        <button @click="pageChange(2)" class="button_2">문제정답자</button>
+        <button @click="pageChange(1)" class="button_2">문제화면</button>
       </div>
-      <div>
-        <button @click="pageChange(4)">정답</button>
-        <button @click="pageChange(3)">순위</button>
-        <button @click="pageChange(2)">문제정답자</button>
-        <button @click="pageChange(1)">문제화면</button>
-      </div>
+      <div id="option_button" @click="optionFunction">X</div>
     </div>
 </template>
 <script>
@@ -38,7 +35,8 @@ export default {
         answer: '',
         list: ''
       },
-      deleteItem: ''
+      deleteItem: '',
+      optionButton: true
     }
   },
   created () {
@@ -129,6 +127,9 @@ export default {
     listFunction (item) {
       console.log(item, item.split(','))
       return item.split(',')
+    },
+    optionFunction () {
+      this.optionButton = !this.optionButton
     }
   }
 }
@@ -154,27 +155,54 @@ export default {
     margin-bottom: 20px;
   }
 
-  #box6 > div:nth-child(2) {
+  #option_area {
     width: 100%;
-    height: auto;
+    height: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
+    padding: 30px;
+    background-color: #cdcdcd;
+  }
+  #option_area > * {
+    float: left;
   }
 
-  #box6 > div:nth-child(3) {
+  #option_area > input {
     width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 50px;
-    left: 0;
+    height: 35px;
+    margin-top: 10px;
+    font-size: 15px;
   }
 
-    #box6 > div:nth-child(4) {
+  #option_button {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    line-height: 25px;
+  }
+  .button_1 {
     width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 100px;
-    left: 0;
+    height: 35px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .button_2 {
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+  }
+  .send_button_class {
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 7px;
   }
 </style>

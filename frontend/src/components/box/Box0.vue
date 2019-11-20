@@ -41,6 +41,8 @@ export default {
         }).then(response => {
           if (response.data.code === 0) {
             alert(this.userName + '님 ' + response.data.msg)
+            localStorage.setItem('user_id', this.userName)
+            localStorage.setItem('user_pwd', this.userPwd)
             this.$store.commit('setUser', this.userName)
             if (this.userName === 'admin1') {
               this.$store.commit('setPage', 6)
@@ -92,6 +94,10 @@ export default {
       this.title = '회원가입'
       this.loginPage = false
     }
+  },
+  mounted () {
+    this.userName = localStorage.getItem('user_id')
+    this.userPwd = localStorage.getItem('user_pwd')
   }
 }
 </script>

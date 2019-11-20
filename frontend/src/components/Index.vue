@@ -78,7 +78,7 @@ export default {
             clearInterval(countSet)
           }
         }, 1000)
-      } else if (setTime === 0 && this.checkCount) {
+      } else if (setTime <= 0 && this.checkCount) {
         this.count = 'End'
       }
     },

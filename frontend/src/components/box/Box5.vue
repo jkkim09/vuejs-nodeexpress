@@ -2,7 +2,7 @@
     <div id="box5">
       <div>정답 선택</div>
       <div>
-        <div v-for="(item, index) in list" :key="index" @click="checkItem(index + 1)">
+        <div v-for="(item, index) in list" :key="index" @click="checkItem(index + 1)" :id="index + 1 + '-button'">
           <span>{{index + 1}}번 : </span>{{item}}
         </div>
       </div>
@@ -29,10 +29,10 @@ export default {
   },
   methods: {
     checkItem (index) {
-      if(!this.checkClick) {
-        alert('중복 선택 불가.');
-        return;
-      } 
+      if (!this.checkClick) {
+        alert('중복 선택 불가.')
+        return
+      }
 
       let mySelect = false
       const answer = this.current.answer
@@ -49,6 +49,11 @@ export default {
         obj: sendAnswer
       })
       this.checkClick = false
+      let buttonEl = document.getElementById(index + '-button')
+      buttonEl.setAttribute('class', 'active')
+      setTimeout(() => {
+        buttonEl.setAttribute('class', '')
+      }, 5000)
     }
   }
 }
@@ -86,5 +91,8 @@ export default {
     margin-bottom: 7px;
     border: 1px solid #c8c8c8;
     border-radius: 7px;
+  }
+  .active {
+    background-color: #fee101;
   }
 </style>
