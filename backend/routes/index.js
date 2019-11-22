@@ -211,7 +211,7 @@ function rankQueryFunction(user, point, end, index) {
                   }
                 });
             } else {
-              const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ numNumber +", "+ indexPoint +")"
+              const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ b[0].num +", "+ indexPoint +")"
               connection.query(pointInsertQuery, function(err, e) {
                 if (end === index) {
                   rankOrderby();
@@ -246,6 +246,7 @@ function rankOrderby () {
 }
 
 function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
+  console.log(userNum, beforRank, afterRank, currentRank);
   // 이전 기록이 있으면
   if (afterRank) {
     const beforRankUpdate = "UPDATE user_point SET befor_rank = "+ afterRank +" WHERE num = " + userNum;
