@@ -16,10 +16,11 @@
         <button @click="insertClick" class="button_1">입력</button>
         <input placeholder="문제 삭제 ex) 2" v-model="deleteItem"/>
         <button @click="deleteClick" class="button_1">삭제</button>
-        <button @click="pageChange(4)" class="button_2">정답</button>
-        <button @click="pageChange(3)" class="button_2">순위</button>
-        <button @click="pageChange(2)" class="button_2">문제정답자</button>
         <button @click="pageChange(1)" class="button_2">문제화면</button>
+        <button @click="pageChange(4)" class="button_2">정답</button>
+        <button @click="pageChange(2)" class="button_2">문제정답자</button>
+        <button @click="pageChange(3)" class="button_2">순위</button>
+        <button @click="pointDelete" class="button_2">point 초기화</button>
       </div>
       <div id="option_button" @click="optionFunction">X</div>
     </div>
@@ -123,6 +124,16 @@ export default {
       } else {
         alert('삭제할 문제 번호를 입력해주세요')
       }
+    },
+    pointDelete () {
+      this.$http({
+        url: '/pointDelete',
+        method: 'get'
+      }).then(response => {
+        if (response.data.code === 0) {
+          alert('초기화 완료')
+        }
+      })
     },
     listFunction (item) {
       console.log(item, item.split(','))

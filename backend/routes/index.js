@@ -187,6 +187,16 @@ router.get('/totalRank', function (req, res, next) {
   });
 });
 
+router.get('/pointDelete', function (req, res, next) {
+  var pointDeleteQuery = 'DELETE FROM user_point';
+  connection.query(pointDeleteQuery, function (err, rows) {
+    res.send({
+      code: 0
+    });
+  });
+});
+
+
 /**
  * rank insert or update query
  */
@@ -199,6 +209,8 @@ function rankQueryFunction(user, point, end, index) {
     connection.query(userSelectQuery, function(err, b) {
         // 포인트 정보에 정보가 있는사람
         if (b[0]) {
+          pointUpdate();
+          console.log(b[0]);
           const userInsertQuery = "SELECT total_point FROM user_point WHERE num =" + b[0].num;
           connection.query(userInsertQuery, function(err, c) {
             // 포인트가 0, undefined 가 아닐때.
@@ -221,14 +233,23 @@ function rankQueryFunction(user, point, end, index) {
           });
         } else {
           // 포인트 정보에 정보가 없는사람
-          const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ a[0].num +", "+ indexPoint +")"
-              connection.query(pointInsertQuery, function(err, f) {
-                if (end === index) {
-                  rankOrderby();
-                }
-          });
+          pointInsert(a[0].num, indexPoint, end, index);
         }
     });
+  });
+}
+
+function pointUpdate () {
+  console.log('point 가 있는사람');
+}
+
+function pointInsert (nuserNum, point, end, index) {
+  console.log('point 가 없는사람', nuserNum, point);
+  const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ nuserNum +", "+ point +")"
+  connection.query(pointInsertQuery, function(err, f) {
+    if (end === index) {
+      rankOrderby();
+    }
   });
 }
 
@@ -249,6 +270,7 @@ function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
   console.log(userNum, beforRank, afterRank, currentRank);
   // 이전 기록이 있으면
   if (afterRank) {
+    console.log('이전 기록있는사람');
     const beforRankUpdate = "UPDATE user_point SET befor_rank = "+ afterRank +" WHERE num = " + userNum;
     connection.query(beforRankUpdate, function(err, a) {
       const afterRankUpdate = "UPDATE user_point SET after_rank = "+ currentRank +" WHERE num = " + userNum;
@@ -256,7 +278,8 @@ function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
       });
     });
   } else {
-    const afterRankUpdate = "UPDATE user_point SET after_rank = "+ afterRank +" WHERE num = " + userNum;
+    console.log('이전 없는사람');
+    const afterRankUpdate = "UPDATE user_point SET after_rank = "+ currentRank +" WHERE num = " + userNum;
     connection.query(afterRankUpdate, function(err, b) {
     });
   }

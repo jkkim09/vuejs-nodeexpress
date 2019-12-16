@@ -5,7 +5,7 @@
           <div>
             <div v-for="(item, index) in items" :key="index">
               {{index + 1}}위 : {{item.id}}({{item.total_point}}점)
-              {{item.after_rank?(item.befor_rank - item.after_rank): '-'}}
+              {{item.after_rank?((item.befor_rank ? item.befor_rank : item.after_rank) - item.after_rank): '-'}}
             </div>
           </div>
         </td>
