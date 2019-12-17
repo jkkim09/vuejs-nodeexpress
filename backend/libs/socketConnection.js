@@ -38,6 +38,16 @@ var socketIO = function(io) {
             // 초기화
             pointCheck = []
         });
+
+        //버튼선택
+        socket.on('buttonSelect', function(data){
+            io.emit('buttonSelect', data.obj);
+        });
+
+        //버튼리셋
+        socket.on('buttonReset', function(data){
+            io.emit('buttonSelect', data.obj);
+        });
     });
 }
 /**

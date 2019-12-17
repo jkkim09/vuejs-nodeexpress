@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index'
-import Button from '@/components/Button.vue'
+import Login from '@/components/Login.vue'
 import ButtonAdmin from '@/components/ButtonAdmin.vue'
 import ButtonView from '@/components/ButtonView.vue'
+import FrontView from '@/components/FrontView.vue'
 
 Vue.use(Router)
 
@@ -16,8 +17,8 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'Button',
-      component: Button
+      name: 'Login',
+      component: Login
     },
     {
       path: '/view',
@@ -28,6 +29,11 @@ export default new Router({
       path: '/admin',
       name: 'ButtonAdmin',
       component: ButtonAdmin
+    },
+    {
+      path: '/front',
+      name: 'FrontView',
+      component: FrontView
     }
   ]
 })
