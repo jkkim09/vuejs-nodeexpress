@@ -10,6 +10,7 @@
                   <input placeholder="PWD" class="m-t-10" v-model="userPwd">
                 </div>
                 <button id="login-btn" class="m-t-10" @click="login">로그인</button>
+                <button id="login-btn" class="m-t-10" @click="addUser">회원가입</button>
               </div>
             </td>
           </tr>
@@ -54,6 +55,29 @@ export default {
         error => {
           console.error(error)
           alert('server 접속 오류')
+        })
+      } else {
+        alert('이름 or 비밀번호 입력 하세요')
+      }
+    },
+    addUser () {
+      if (this.userName.trim() !== '' && this.userPwd.trim() !== '') {
+        this.$http({
+          url: '/addUser',
+          method: 'get',
+          params: {
+            userName: this.userName,
+            userPwd: this.userPwd
+          }
+        }).then(response => {
+          if (response.data.code === 0) {
+            alert(response.data.msg)
+          } else {
+            alert(response.data.msg)
+          }
+        },
+        error => {
+          console.log(error)
         })
       } else {
         alert('이름 or 비밀번호 입력 하세요')
