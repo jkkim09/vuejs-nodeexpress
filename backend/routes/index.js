@@ -240,11 +240,9 @@ function rankQueryFunction(user, point, end, index) {
 }
 
 function pointUpdate () {
-  console.log('point 가 있는사람');
 }
 
 function pointInsert (nuserNum, point, end, index) {
-  console.log('point 가 없는사람', nuserNum, point);
   const pointInsertQuery = "INSERT INTO user_point(num, total_point) VALUE("+ nuserNum +", "+ point +")"
   connection.query(pointInsertQuery, function(err, f) {
     if (end === index) {
@@ -270,7 +268,6 @@ function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
   console.log(userNum, beforRank, afterRank, currentRank);
   // 이전 기록이 있으면
   if (afterRank) {
-    console.log('이전 기록있는사람');
     const beforRankUpdate = "UPDATE user_point SET befor_rank = "+ afterRank +" WHERE num = " + userNum;
     connection.query(beforRankUpdate, function(err, a) {
       const afterRankUpdate = "UPDATE user_point SET after_rank = "+ currentRank +" WHERE num = " + userNum;
@@ -278,7 +275,6 @@ function rankUpdateQurey (userNum, beforRank, afterRank, currentRank) {
       });
     });
   } else {
-    console.log('이전 없는사람');
     const afterRankUpdate = "UPDATE user_point SET after_rank = "+ currentRank +" WHERE num = " + userNum;
     connection.query(afterRankUpdate, function(err, b) {
     });
