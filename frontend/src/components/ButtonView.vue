@@ -4,7 +4,9 @@
         <table>
           <tr>
             <td class="center">
-              <div id="reset-btn" @click="sendBtn"></div>
+              <div id="reset-btn-area">
+                <div id="reset-btn" @click="sendBtn"></div>
+              </div>
             </td>
           </tr>
         </table>
@@ -25,6 +27,16 @@ export default {
         }
       })
     }
+  },
+  mounted () {
+    var btn = document.getElementById('reset-btn-area')
+    btn.addEventListener('touchstart', (e) => {
+      btn.setAttribute('class', 'active')
+    })
+
+    btn.addEventListener('touchend', (e) => {
+      btn.setAttribute('class', '')
+    })
   }
 }
 </script>
@@ -51,17 +63,23 @@ export default {
 .center {
   text-align: center;
 }
-
-#reset-btn {
+#reset-btn-area {
   width: 250px;
   height: 250px;
-  line-height: 150px;
-  font-size: 30px;
-  font-weight: bold;
   border-radius: 50%;
-  display: inline-block;
   background-color: #c8c8c8;
-  color: #ffffff;
+  display: inline-block;
+}
+
+#reset-btn-area.active {
+  background-color: #000000;
+}
+
+#reset-btn {
+  width: 200px;
+  height: 200px;
+  line-height: 150px;
+  display: inline-block;
   background-image: url('../assets/image/me.gif');
   background-size: cover;
 }
