@@ -48,7 +48,7 @@ export default {
 }
 #table-item-td > div:nth-child(1) {
   width: 80%;
-  height: 50%;
+  height: 80%;
   display: inline-block;
   overflow: scroll;
 }

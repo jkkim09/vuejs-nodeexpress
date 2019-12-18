@@ -130,7 +130,7 @@ export default {
 }
 #box {
   width: 100%;
-  height: 369px;
+  height: 80%;
   background-image: url('../assets/image/img1.png');
   background-size: cover;
   padding: 10px;
