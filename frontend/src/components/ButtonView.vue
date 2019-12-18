@@ -21,7 +21,7 @@ export default {
       this.$socket.emit('buttonSelect', {
         obj: {
           type: true,
-          value: this.$store.getters.getUser
+          value: this.$store.getters.getUser || localStorage.getItem('user_id')
         }
       })
     }

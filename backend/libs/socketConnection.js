@@ -41,6 +41,7 @@ var socketIO = function(io) {
 
         //버튼선택
         socket.on('buttonSelect', function(data){
+            console.log(data.obj);
             io.emit('buttonSelect', data.obj);
         });
 
