@@ -37,6 +37,9 @@ $ npm run build
 `````
 
 ## Project 배포
+`````bash
+$ docker build -t {tagname:version} .
+`````
 
 `````bash
 $ docker run -d -p {외부포트}:{내부포트} {tagname:version}
