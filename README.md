@@ -24,7 +24,7 @@ $ cd ./frontend
 `````
 
 `````bash
-$ npm run start     // webpack.config.js
+$ npm run start
 `````
 ## Front-end(vuejs) Build
 
@@ -33,7 +33,7 @@ $ cd ./frontend
 `````
 
 `````bash
-$ npm run build     // webpack.config.build.js
+$ npm run build
 `````
 
 ## Project 배포
